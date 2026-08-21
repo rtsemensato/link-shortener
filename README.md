@@ -5,6 +5,11 @@ rotativo), CRUD de links com slug automático ou customizado, redirect
 público com contagem de cliques, e estatísticas por link. Rate limiting,
 validação de entrada e documentação OpenAPI (Swagger).
 
+**Ao vivo**: [link-shortener-t8lh.onrender.com](https://link-shortener-t8lh.onrender.com)
+(Render free tier, primeiro acesso após inatividade pode levar ~30s pra
+responder porque o servidor "dorme"). Docs interativas em
+[`/api/docs`](https://link-shortener-t8lh.onrender.com/api/docs).
+
 ## Estrutura do repositório
 
 ```
@@ -131,9 +136,13 @@ que não funcionava).
 
 ## Deploy
 
-- **API**: Render (free tier), com Postgres gerenciado (Render Postgres, ou
-  Neon/Supabase). Configurar `DATABASE_URL`, `JWT_ACCESS_SECRET`,
+- **API + banco**: Render (free tier), Web Service + Postgres gerenciado,
+  os dois no mesmo projeto do Render. Variáveis de ambiente:
+  `DATABASE_URL` (Internal Database URL do Postgres), `JWT_ACCESS_SECRET`,
   `JWT_REFRESH_SECRET` e `BASE_URL` (URL pública da própria API, usada pra
-  montar o `shortUrl` nas respostas) como variáveis de ambiente.
-- Build: `npm install && npx prisma migrate deploy && npm run build`.
+  montar o `shortUrl` nas respostas).
+- Build: `npm install && npx prisma generate && npx prisma migrate deploy && npm run build`.
   Start: `npm run start:prod`.
+- Diferente do Task Manager (SQLite, efêmero no free tier), o Postgres do
+  Render é um serviço próprio: os dados persistem entre deploys e restarts
+  do Web Service.
