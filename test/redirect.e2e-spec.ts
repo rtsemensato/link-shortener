@@ -82,4 +82,9 @@ describe('Redirect (e2e)', () => {
       .expect(200);
     expect(response.body).toEqual({ status: 'ok' });
   });
+
+  it('redirects the bare root to the API docs instead of a raw 404', async () => {
+    const response = await request(app.getHttpServer()).get('/').expect(302);
+    expect(response.headers.location).toBe('/api/docs');
+  });
 });
