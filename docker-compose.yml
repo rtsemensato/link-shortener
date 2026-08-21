@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: linkshortener
+      POSTGRES_PASSWORD: linkshortener_dev
+      POSTGRES_DB: linkshortener
+    ports:
+      # Porta não padrão no host, pra não conflitar com um Postgres já
+      # instalado na máquina.
+      - "5434:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
